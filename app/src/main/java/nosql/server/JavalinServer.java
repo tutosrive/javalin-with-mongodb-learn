@@ -39,7 +39,6 @@ public class JavalinServer {
                     () -> {
                         ApiBuilder.crud("users/{user-id}", new UserController());
                     });
-            // config.routes.get("/user", ctx -> ctx.json(userCtrl.getAllUsers(ctx)));
         }).start(port);
     }
 }

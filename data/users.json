@@ -1,8 +1,6 @@
-[
-    {
-        "name": "Santiago",
-        "age": 20,
-        "lastname": "Rivera Marin",
-        "email": "srm@gmail.com"
-    }
-]
+{
+  "name": "André",
+  "lastname": "Rivera",
+  "age": 20,
+  "email": "srm@gmail.com"
+}

@@ -8,7 +8,7 @@
  * File: \UserController.java
  * Created: Thursday, 21st May 2026 8:51:09 pm
  * -----
- * Last Modified: Friday, 22nd May 2026 1:43:55 pm
+ * Last Modified: Saturday, 23rd May 2026 8:09:52 pm
  * Modified By: tutosrive (tutosrive@Dev2Forge.software)
  * -----
  */
@@ -21,21 +21,22 @@ import nosql.utils.FileUtils;
 
 public class UserController implements CrudHandler {
     private String fileDataName;
-    private String dataFile;
+    private String fileDateConetent;
 
     public UserController() {
         this.fileDataName = "users.json";
-        this.dataFile = this.getContentData();
+        this.getContentData();
     }
 
-    private final String getContentData() {
-        return FileUtils.readFileData(this.fileDataName);
+    private final void getContentData() {
+        this.fileDateConetent = FileUtils.readFileData(this.fileDataName);
     }
 
     @Override
-    public void create(Context arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'create'");
+    public void create(Context ctx) {
+        String body = ctx.body();
+        FileUtils.saveFileToData(this.fileDataName, body.toString());
+        ctx.status(201);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class UserController implements CrudHandler {
 
     @Override
     public void getAll(Context ctx) {
-        ctx.json(this.dataFile);
+        ctx.json(this.fileDateConetent);
     }
 
     @Override
