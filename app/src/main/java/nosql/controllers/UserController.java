@@ -8,43 +8,57 @@
  * File: \UserController.java
  * Created: Thursday, 21st May 2026 8:51:09 pm
  * -----
- * Last Modified: Thursday, 21st May 2026 9:40:20 pm
+ * Last Modified: Saturday, 23rd May 2026 8:09:52 pm
  * Modified By: tutosrive (tutosrive@Dev2Forge.software)
  * -----
  */
 
 package nosql.controllers;
 
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import io.javalin.apibuilder.CrudHandler;
 import io.javalin.http.Context;
+import nosql.utils.FileUtils;
 
-public class UserController {
-    private Path urlData;
-    private String dataFile;
+public class UserController implements CrudHandler {
+    private String fileDataName;
+    private String fileDateConetent;
 
     public UserController() {
-        this.urlData = Paths.get("data/users.json");
-        this.dataFile = this.getContentData();
+        this.fileDataName = "users.json";
+        this.getContentData();
     }
 
-    public final String getAllUsers(Context ctx) {
-        return this.dataFile;
+    private final void getContentData() {
+        this.fileDateConetent = FileUtils.readFileData(this.fileDataName);
     }
 
-    private final String getContentData() {
-        File file = new File(this.urlData.toAbsolutePath().toString());
-        String content = "Failed to load data file";
-        if (file.exists()) {
-            try {
-                content = Files.readString(this.urlData);
-            } catch (Exception e) {
-                content = String.format("Has been an error: %s", e.getMessage());
-            }
-        }
+    @Override
+    public void create(Context ctx) {
+        String body = ctx.body();
+        FileUtils.saveFileToData(this.fileDataName, body.toString());
+        ctx.status(201);
+    }
 
-        return content;
+    @Override
+    public void delete(Context arg0, String arg1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    @Override
+    public void getAll(Context ctx) {
+        ctx.json(this.fileDateConetent);
+    }
+
+    @Override
+    public void getOne(Context arg0, String arg1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getOne'");
+    }
+
+    @Override
+    public void update(Context arg0, String arg1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 }

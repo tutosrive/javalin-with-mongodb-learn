@@ -8,7 +8,7 @@
  * File: \JavalinServer.java
  * Created: Thursday, 21st May 2026 8:22:27 pm
  * -----
- * Last Modified: Thursday, 21st May 2026 9:41:33 pm
+ * Last Modified: Friday, 22nd May 2026 1:42:03 pm
  * Modified By: tutosrive (tutosrive@Dev2Forge.software)
  * -----
  */
@@ -16,7 +16,7 @@
 package nosql.server;
 
 import io.javalin.Javalin;
-import io.javalin.plugin.bundled.CorsPluginConfig.CorsRule;
+import io.javalin.apibuilder.ApiBuilder;
 import nosql.controllers.UserController;
 
 public class JavalinServer {
@@ -27,14 +27,18 @@ public class JavalinServer {
     }
 
     public JavalinServer(int port) {
-        UserController userCtrl = new UserController();
+        // UserController userCtrl = new UserController();
         this.app = Javalin.create(config -> {
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(it -> {
                     it.anyHost();
                 });
             });
-            config.routes.get("/user", ctx -> ctx.json(userCtrl.getAllUsers(ctx)));
+
+            config.routes.apiBuilder(
+                    () -> {
+                        ApiBuilder.crud("users/{user-id}", new UserController());
+                    });
         }).start(port);
     }
 }
